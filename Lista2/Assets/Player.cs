@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
             {
                 hp = 0;
                 print("morreu");
+                Destroy(gameObject);
             }
 
             hp = value;
