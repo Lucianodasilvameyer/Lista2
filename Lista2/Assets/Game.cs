@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Game : MonoBehaviour
 {
@@ -18,6 +19,35 @@ public class Game : MonoBehaviour
     float timerAumentoSpawn=0.1f;
     [SerializeField]
     float timerAumentoSpawnMax=2;
+    [SerializeField]
+    private int _score;// sempre q usar o get e o set, deve-se criar a variavel private e a public
+    public int Score
+    {
+
+        get
+        {
+            return _score;
+        }
+        set
+        {
+            if(value<=0)
+            {
+                _score = 0;
+            }
+            else
+            
+            _score = value;
+
+
+            textoPontuacao.text = "pontuação " + _score;
+            
+
+        }
+    }
+
+
+
+    public TextMeshProUGUI textoPontuacao;
 
     List<Inimigo> listaInimigos = new List<Inimigo>(); 
 
@@ -27,7 +57,8 @@ public class Game : MonoBehaviour
     {
         inicioTimer = Time.time;
         timerAumentoSpawn = Time.time;
-
+        Score = 0;
+       
 
     }
 
@@ -46,10 +77,19 @@ public class Game : MonoBehaviour
             inicioTimer = Time.time;
             spawnEnemy(new Vector2(Random.Range(3, 8), Random.Range(4, 2)));
             spawnEnemy(new Vector2(Random.Range(9, 1), Random.Range(5, 7)));
-        } 
-        
-        
+        }
+
+
+        /* if(Time.time>=)
+        {
+
+            Score++;
+        }
+        */
     }
+
+
+
 
     void spawnEnemy(Vector2 position)
     {

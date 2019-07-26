@@ -1,78 +1,95 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 0;
+    [SerializeField]
+     float speed = 0;
 
-    
-    public int VidaDoplayer=5;
 
-    public Texture sangueAzul;
-    public Texture contornoDoSangue;
-    public int Vidacheia=5;
+    [SerializeField]
+     int hpMax=5;
 
-   
-    private int hp;
+    [SerializeField]
+    int hpInicial=1;
+
+    [SerializeField]
+    private float tempoInicialCura=1;
+
+    [SerializeField]
+    private float tempoFinalCura = 5;
+
+    [SerializeField]
+    private int taxaDeCura=1;//colocando 0. o valor multiplicado cai e 1. o valor multiplicado aumenta 
+    [SerializeField]
+    private int _hp;// sempre q usar o get e o set, deve-se criar a variavel private e a public
     public int Hp
     {
 
         get
         {
-            return hp;
+            return _hp;
         }
         set
         {
 
-            
 
-            if (value<=0)
+
+            if (value <= 0)
             {
-                hp = 0;
+                _hp = 0;
                 print("morreu");
-                Destroy(gameObject);
+                sliderHp.value = 0;
+                // Destroy(gameObject);
             }
+            else if (value >= hpMax)
+            {
+                _hp = hpMax;
+                sliderHp.value = 1;
 
-            hp = value;
+                
+            }
+            else
+            _hp = value; //
+            sliderHp.value =(float) _hp / (float)hpMax;  //aqui o value é do tipo float e por isso é preciso passar o _hp e o hpMax para float
+            //aqui tem q trabalhar com o objeto sliderHp criado pois a classe esta vazia?sim
+
         }
     }
-
     [SerializeField]
-    TextMeshProUGUI vidaText;
+    Slider sliderHp;
+   
+
 
     // Start is called before the first frame update
     void Start()
     {
-        VidaDoplayer = Vidacheia;
-
-        Hp = 5;
+        Hp = hpMax; //aqui indica q vai entrar no public Hp e o value se torna o valor do hpMax?
+        
+        tempoInicialCura = Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(VidaDoplayer>=Vidacheia)
-        {
-            VidaDoplayer = Vidacheia;
-        }
-        else if(VidaDoplayer<=0)
-        {
-            VidaDoplayer = 0;
-        }
 
 
         andar();
-    }
-    void OnGUI()
-    {
-        GUI.DrawTexture(new Rect(Screen.width / 25, Screen.height / 15, Screen.width / 5.5f/Vidacheia*VidaDoplayer, Screen.height / 25), sangueAzul);
-        GUI.DrawTexture(new Rect(Screen.width / 40, Screen.height / 40, Screen.width / 5, Screen.height / 8), contornoDoSangue);
-        
+
+
+        if (Time.time >= tempoInicialCura + tempoFinalCura)
+        {
+            tempoInicialCura = Time.time;
+            Hp+=taxaDeCura;
+            
+        }
+
+
 
     }
-
     private void andar()
     {
 
@@ -95,6 +112,14 @@ public class Player : MonoBehaviour
             Hp -= dano; 
         
     }
+    
+
+   
+
+
+
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         
