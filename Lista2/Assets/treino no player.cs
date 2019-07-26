@@ -62,7 +62,7 @@ public class treinonoplayer : MonoBehaviour
     {
         if (other.CompareTag("inimigo"))
         {
-            other.GetComponent<Inimigo>().causarDano(this);//
+            other.GetComponent<treinonoinimigo>().causarDano(this);
         }
     }
 

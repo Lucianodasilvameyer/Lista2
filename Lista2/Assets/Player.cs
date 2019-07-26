@@ -7,8 +7,12 @@ public class Player : MonoBehaviour
 {
     public float speed = 0;
 
-    [SerializeField]
-    int VidaDoplayer;
+    
+    public int VidaDoplayer=5;
+
+    public Texture sangueAzul;
+    public Texture contornoDoSangue;
+    public int Vidacheia=5;
 
    
     private int hp;
@@ -41,13 +45,32 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        VidaDoplayer = Vidacheia;
+
         Hp = 5;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(VidaDoplayer>=Vidacheia)
+        {
+            VidaDoplayer = Vidacheia;
+        }
+        else if(VidaDoplayer<=0)
+        {
+            VidaDoplayer = 0;
+        }
+
+
         andar();
+    }
+    void OnGUI()
+    {
+        GUI.DrawTexture(new Rect(Screen.width / 25, Screen.height / 15, Screen.width / 5.5f/Vidacheia*VidaDoplayer, Screen.height / 25), sangueAzul);
+        GUI.DrawTexture(new Rect(Screen.width / 40, Screen.height / 40, Screen.width / 5, Screen.height / 8), contornoDoSangue);
+        
+
     }
 
     private void andar()
@@ -78,7 +101,7 @@ public class Player : MonoBehaviour
         if(collision.CompareTag("inimigo"))
         {
             collision.GetComponent<Inimigo>().causarDano(this);
-            Destroy(collision.gameObject);
+           
 
         } 
     }

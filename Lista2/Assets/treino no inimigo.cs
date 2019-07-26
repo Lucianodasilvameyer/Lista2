@@ -17,25 +17,25 @@ public class treinonoinimigo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        local() //pq colocar esta função no start?, ela não se repetiria mais vezes?vão ter o alvo só uma vez
+        local(); //pq colocar esta função no start?, ela não se repetiria mais vezes?vão ter o alvo só uma vez
     }
 
     // Update is called once per frame
     void Update()
     {
-        move()
+        move();
     }
 
     public virtual void move()
-
-
-    Vector2 velocity = speed * direction * Time.deltaTime;   //o vector 2 velocity é o moveAmont 
-    Transform.translate(velocity);        //para q colocar a velocity entre parenteses aqui?para passar o quanto ira se mover
-    
-
-    public virtual void causarDano(Player alvo)
     {
-        alvo.tomarDano((int)Strength);
+
+        Vector2 velocity = Speed * direction * Time.deltaTime;   //o vector 2 velocity é o moveAmont 
+        transform.Translate(velocity);        //para q colocar a velocity entre parenteses aqui?para passar o quanto ira se mover
+    }
+
+    public virtual void causarDano(treinonoplayer alvo)
+    {
+        alvo.TomarDano((int)Strength);
     }
 
     public virtual void local()

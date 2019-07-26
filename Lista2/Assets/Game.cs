@@ -9,7 +9,7 @@ public class Game : MonoBehaviour
     [SerializeField]
     float inicioTimer=0.1f;
     [SerializeField]
-    float timerMax = 2;
+    float timerMax = 2; //tipo float?
     [SerializeField]
     [Range(0.05f,1f)]
     float taxaSpawn=0.5f;
@@ -34,7 +34,12 @@ public class Game : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Time.time >= timerAumentoSpawn + timerAumentoSpawnMax)
+        {
+            timerAumentoSpawn = Time.time;
+            timerMax *= taxaSpawn;
 
+        }
 
         if (Time.time>=inicioTimer+timerMax)
         {
@@ -43,19 +48,15 @@ public class Game : MonoBehaviour
             spawnEnemy(new Vector2(Random.Range(9, 1), Random.Range(5, 7)));
         } 
         
-        if(Time.time>=timerAumentoSpawn+timerAumentoSpawnMax)
-        {
-            timerAumentoSpawn = Time.time;
-            timerMax *= taxaSpawn;
-
-        }
+        
     }
 
     void spawnEnemy(Vector2 position)
     {
-        GameObject go = Instantiate(inimigoPrefab, position, Quaternion.identity);// o Quaternion.identity é para manter a mesma rotação
-        go.GetComponent<Inimigo>().direction = (new Vector3(Random.Range(3, 8), Random.Range(4, 2)) - go.transform.position).normalized;
-        listaInimigos.Add(go.GetComponent<Inimigo>());
+        GameObject go = Instantiate(inimigoPrefab, position, Quaternion.identity);
+        go.GetComponent<Inimigo>().direction = (new Vector3(Random.Range(3, 8), Random.Range(4, 2)) - go.transform.position).normalized; //aqui o GetComponent pega o gameobject inimigo na variavel go e trabalha só com a direção dele?
+        listaInimigos.Add(go.GetComponent<Inimigo>());         // pq subtrair pela posição do inimigo?
+        
 
         
     }
