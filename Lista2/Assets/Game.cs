@@ -8,28 +8,12 @@ using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject espadaPrefab;
-    [SerializeField]
-    private GameObject shurikenPrefab;
+    
     [SerializeField]
     private GameObject powerUpPrefab;
 
-    [SerializeField]
-    private float tempoDeDestruicaoInicial;
+   
 
-    [SerializeField]
-    private float tempoDeDestruicaoMax;
-
-    [SerializeField]
-    espada espadaX;
-
-    [SerializeField]
-    shuriken shurikenX;
-    
-
-    [SerializeField]
-    powerup powerupX; 
 
     [SerializeField]
     private float powerUpInicial;
@@ -39,14 +23,10 @@ public class Game : MonoBehaviour
 
     public GameObject inimigoPrefab;
 
-    public static Game game;
-
-    [SerializeField]
-    protected Game game_ref;
 
 
 
-    public GameObject gameOverText;
+    public TextMeshProUGUI gameOverText;
 
 
     [SerializeField]
@@ -101,14 +81,13 @@ public class Game : MonoBehaviour
     public TextMeshProUGUI textoPontuacao;
 
     List<Inimigo> listaInimigos = new List<Inimigo>();
-    List<powerup> listaPowerups = new List<powerup>();
-    List<shuriken> listaShurikens = new List<shuriken>();
-    List<espada> listaEspadas = new List<espada>();
+    List<Powerup> listaPowerups = new List<Powerup>();
+   
 
     // Start is called before the first frame update
     void Start()
     {
-        tempoDeDestruicaoInicial = Time.time;
+        
         powerUpInicial = Time.time;
         pontuacaoInicio = Time.time;
         inicioTimer = Time.time;
@@ -148,11 +127,7 @@ public class Game : MonoBehaviour
             powerUpInicial = Time.time;
             spawnarPowerUp();
         }
-        if(Time.time>=tempoDeDestruicaoInicial+tempoDeDestruicaoMax)
-        {
-            tempoDeDestruicaoInicial = Time.time;
-            DestruirPowerUp();
-        } 
+        
     }
 
 
@@ -170,32 +145,17 @@ public class Game : MonoBehaviour
    
     public void GameOver()
     {
-        gameOverText.enabled = true;
+
         gameOverText.gameObject.SetActive(true);
     }
     public void spawnarPowerUp()
     {
-        GameObject sis = Instantiate(powerUpPrefab, position, Quaternion.identity);
-        sis.GetComponent<powerup>().direction = (new Vector3(Random.Range(4.5), Random.Range(1.8))-sis.transform.position).normalized;
-        listaPowerups.Add(sis.GetComponent<powerup>());
-    }
-    public void DestruirPowerUp()
-    {
-        Destroy("PowerUp");
-    }
-    public void Spawnarshuriken()
-    {
-        GameObject fit = Instantiate(shurikenPrefab, position, Quaternion.identity);
-        fit.GetComponent<shuriken>().direction(new Vector3(-5.88), (1.63));
-        listaShurikens.Add(fit.GetComponent<shuriken>());
-    }
-    public void Spawnarespada()
-    {
-        GameObject rit = Instantiate(espadaPrefab, position, Quaternion.identity);
-        rit.GetComponent<espada>().direction(new Vector3(-0.31), (1.66));
-        listaEspadas.Add(rit.GetComponent<espada>());
+        GameObject sis = Instantiate(powerUpPrefab, new Vector3(Random.Range(0,10), Random.Range(0, 10)), Quaternion.identity);
+       
+        listaPowerups.Add(sis.GetComponent<Powerup>());
     }
 
+    
 
 
 }

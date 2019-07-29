@@ -8,25 +8,28 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    public static Player player;
+    [SerializeField]
+    private GameObject espadaPrefab;
+    [SerializeField]
+    private GameObject shurikenPrefab;
+
+    private float InvencibilidadeInicial;
+    private float InvenciblilidadeMax;
+
+    private bool invencivel=false;
 
 
-    private TextMeshProUGUI Ninja;
+    private Game gameRef;
 
 
-    private float segundos;
-    private int segundosToInt;
-    private int minutos;
-
-    public Text minutostext;
-    public Text segundostext;
 
     public bool gameOver=false;
 
     
-    public GameObject GameOvertext;
 
-    public TextMeshProUGUI textoGameOver;
+
+    [SerializeField] //serve para as variaveis private aparecerem no inspector
+    bool isPlayer1;
 
     [SerializeField]
     float speed = 0;
@@ -63,15 +66,15 @@ public class Player : MonoBehaviour
             if (value <= 0)
             {
                 _hp = 0;
-               
-                
-                
-               
+
+
+
+
 
 
                 sliderHp.value = 0;
                 Destroy(gameObject);
-                textoGameOver.text = "GameOver";
+                Morte();
 
             }
             else if (value >= hpMax)
@@ -79,11 +82,16 @@ public class Player : MonoBehaviour
                 _hp = hpMax;
                 sliderHp.value = 1;
 
-                
+
             }
             else
-            _hp = value; //
-            sliderHp.value =(float) _hp / (float)hpMax;  //aqui o value é do tipo float e por isso é preciso passar o _hp e o hpMax para float
+            { 
+              _hp = value;
+                sliderHp.value = (float)_hp / (float)hpMax;  //aqui o value é do tipo float e por isso é preciso passar o _hp e o hpMax para float
+            }                                               //se o value não for maior q o maximo ou menor q o minimo se usa a regra de 3 para descobrir seu valor 
+
+            
+            
             //aqui tem q trabalhar com o objeto sliderHp criado pois a classe esta vazia?sim
 
         }
@@ -96,10 +104,12 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Ninja.text = "Ninja";
+      
         Hp = hpMax; //aqui indica q vai entrar no public Hp e o value se torna o valor do hpMax?
         
         tempoInicialCura = Time.time;
+
+        gameRef = GameObject.FindGameObjectWithTag("Game").GetComponent<Game>();//por este tipo de referencia qualquer função do script game pode ser usada no script player?sim, as publicas
     }
 
     // Update is called once per frame
@@ -135,16 +145,31 @@ public class Player : MonoBehaviour
             Hp+=(int)taxaDeCura;
             
         }
+        if (invencivel == true)
+        {
+            if (Time.time >= InvencibilidadeInicial + InvenciblilidadeMax)
+            {
 
-        
+                toggleInvencibilidade();
+            }
+        }
 
 
 
     }
     private void andar()
     {
+        Vector2 input;
 
-        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"),Input.GetAxisRaw("Vertical"));
+        if(isPlayer1)
+        {
+            input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        }
+        else
+        {
+            input = new Vector2(Input.GetAxisRaw("Horizontal2"), Input.GetAxisRaw("Vertical2"));
+        }
+     
 
 
         Vector3 direction = input.normalized;
@@ -176,31 +201,59 @@ public class Player : MonoBehaviour
         
         if(collision.CompareTag("inimigo"))
         {
+            if(!invencivel)
             collision.GetComponent<Inimigo>().causarDano(this);
-           
 
-        } 
+            Destroy(collision.gameObject);
+            
+
+        }
+        if(collision.CompareTag("CapaDeInvencibilidade"))
+        {
+            if (invencivel == false)
+            {
+
+                InvencibilidadeInicial = Time.time;//colocar aqui pq tem q começar a contar no momento q pegou
+                toggleInvencibilidade();
+            } 
+        }
+                  
+
     }
 
 
     public void Morte()
     {
-        Game.game.GameOver();
+        gameRef.GameOver();
         print("morreu");
     }
-    private virtual void Invencibilidade(Player alvo)
+    private void toggleInvencibilidade()
     {
-        Hp = hpMax;
+        invencivel = !invencivel;
+        
     }
 
-    private virtual void AtacarComShuriken(Inimigo alvo)
+    private void AtacarComShuriken(Inimigo alvo)
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            Game.Spawnarshuriken();
+            Spawnarshuriken();
         } 
     }
-    
+    public void Spawnarshuriken()
+    {
+        GameObject fit = Instantiate(shurikenPrefab, transform.position, Quaternion.identity);
+
+        
+    }
+    public void Spawnarespada()
+    {
+        GameObject rit = Instantiate(espadaPrefab, transform.position, Quaternion.identity);
+       
+        
+    }
+
+
 
 }
 

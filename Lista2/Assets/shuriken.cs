@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class shuriken : MonoBehaviour
+public class Shuriken : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -15,11 +15,19 @@ public class shuriken : MonoBehaviour
     {
         
     }
-    public void OnCollisionEnter2D(Collision2D collision)
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("inimigo")
+
+        if (collision.CompareTag("inimigo") )
         {
-            Destroy(Inimigo);
-        }  
+            Destroy(collision.gameObject);
+
+
+
+        }
+       
+
+
     }
 }
