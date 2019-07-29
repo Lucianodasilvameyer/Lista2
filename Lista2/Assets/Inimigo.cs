@@ -48,4 +48,6 @@ public class Inimigo : MonoBehaviour
     {
         alvo.TomarDano((int) strength);
     }
+    
+    
 }

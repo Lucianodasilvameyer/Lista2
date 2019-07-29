@@ -1,27 +1,73 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 
 public class Game : MonoBehaviour
 {
-    public GameObject inimigoPrefab;
+    [SerializeField]
+    private GameObject shurikenPrefab;
+    [SerializeField]
+    private GameObject powerUpPrefab;
 
     [SerializeField]
-    float inicioTimer=0.1f;
+    private float tempoDeDestruicaoInicial;
+
+    [SerializeField]
+    private float tempoDeDestruicaoMax;
+
+    [SerializeField]
+    shuriken shurikenX;
+    
+
+    [SerializeField]
+    powerup powerupX; 
+
+    [SerializeField]
+    private float powerUpInicial;
+
+    [SerializeField]
+    private float powerUpMax;
+
+    public GameObject inimigoPrefab;
+
+    public static Game game;
+
+    [SerializeField]
+    protected Game game_ref;
+
+
+
+    public GameObject gameOverText;
+
+
+    [SerializeField]
+    private float pontuacaoInicio=1;
+
+    [SerializeField]
+    private float pontuacaoMax=2;
+
+    [SerializeField]
+    private float taxaDePontos=1f;
+
+    [SerializeField]
+    float inicioTimer=1.1f;
     [SerializeField]
     float timerMax = 2; //tipo float?
     [SerializeField]
     [Range(0.05f,1f)]
-    float taxaSpawn=0.5f;
+    float taxaSpawn=0.25f;
 
     [SerializeField]
-    float timerAumentoSpawn=0.1f;
+    float timerAumentoSpawn=1f;
     [SerializeField]
     float timerAumentoSpawnMax=2;
     [SerializeField]
-    private int _score;// sempre q usar o get e o set, deve-se criar a variavel private e a public
-    public int Score
+    private float _score;// sempre q usar o get e o set, deve-se criar a variavel private e a public
+    public float Score
     {
 
         get
@@ -49,12 +95,16 @@ public class Game : MonoBehaviour
 
     public TextMeshProUGUI textoPontuacao;
 
-    List<Inimigo> listaInimigos = new List<Inimigo>(); 
-
+    List<Inimigo> listaInimigos = new List<Inimigo>();
+    List<powerup> listaPowerups = new List<powerup>();
+    List<shuriken> listaShurikens = new List<shuriken>();
 
     // Start is called before the first frame update
     void Start()
     {
+        tempoDeDestruicaoInicial = Time.time;
+        powerUpInicial = Time.time;
+        pontuacaoInicio = Time.time;
         inicioTimer = Time.time;
         timerAumentoSpawn = Time.time;
         Score = 0;
@@ -79,13 +129,24 @@ public class Game : MonoBehaviour
             spawnEnemy(new Vector2(Random.Range(9, 1), Random.Range(5, 7)));
         }
 
+      
 
-        /* if(Time.time>=)
+        if(Time.time>=pontuacaoInicio+pontuacaoMax)
         {
-
-            Score++;
+            pontuacaoInicio = Time.time;
+            Score+=taxaDePontos;
         }
-        */
+
+        if(Time.time>=powerUpInicial+powerUpMax)
+        {
+            powerUpInicial = Time.time;
+            spawnarPowerUp();
+        }
+        if(Time.time>=tempoDeDestruicaoInicial+tempoDeDestruicaoMax)
+        {
+            tempoDeDestruicaoInicial = Time.time;
+            DestruirPowerUp();
+        } 
     }
 
 
@@ -100,5 +161,28 @@ public class Game : MonoBehaviour
 
         
     }
-    
+   
+    public void GameOver()
+    {
+        gameOverText.enabled = true;
+        gameOverText.gameObject.SetActive(true);
+    }
+    public void spawnarPowerUp()
+    {
+        GameObject sis = Instantiate(powerUpPrefab, position, Quaternion.identity);
+        sis.GetComponent<powerup>().direction = (new Vector3(Random.Range(4.5), Random.Range(1.8))-sis.transform.position).normalized;
+        listaPowerups.Add(sis.GetComponent<powerup>());
+    }
+    public void DestruirPowerUp()
+    {
+        Destroy("PowerUp");
+    }
+    public void Spawnarshuriken()
+    {
+        GameObject fit = Instantiate(shurikenPrefab, position, Quaternion.identity);
+        fit.GetComponent<shuriken>().direction(new Vector3(-5.88), (1.63));
+        listaShurikens.Add(fit.GetComponent<shuriken>());
+
+
+    }
 }

@@ -3,11 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 
 public class Player : MonoBehaviour
 {
+    public static Player player;
+
+
+    private TextMeshProUGUI Ninja;
+
+
+    private float segundos;
+    private int segundosToInt;
+    private int minutos;
+
+    public Text minutostext;
+    public Text segundostext;
+
+    public bool gameOver=false;
+
+    
+    public GameObject GameOvertext;
+
+    public TextMeshProUGUI textoGameOver;
+
     [SerializeField]
-     float speed = 0;
+    float speed = 0;
 
 
     [SerializeField]
@@ -23,7 +45,7 @@ public class Player : MonoBehaviour
     private float tempoFinalCura = 5;
 
     [SerializeField]
-    private int taxaDeCura=1;//colocando 0. o valor multiplicado cai e 1. o valor multiplicado aumenta 
+    private float taxaDeCura=0.5f;//colocando 0. o valor multiplicado cai e 1. o valor multiplicado aumenta 
     [SerializeField]
     private int _hp;// sempre q usar o get e o set, deve-se criar a variavel private e a public
     public int Hp
@@ -41,9 +63,16 @@ public class Player : MonoBehaviour
             if (value <= 0)
             {
                 _hp = 0;
-                print("morreu");
+               
+                
+                
+               
+
+
                 sliderHp.value = 0;
-                // Destroy(gameObject);
+                Destroy(gameObject);
+                textoGameOver.text = "GameOver";
+
             }
             else if (value >= hpMax)
             {
@@ -67,6 +96,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Ninja.text = "Ninja";
         Hp = hpMax; //aqui indica q vai entrar no public Hp e o value se torna o valor do hpMax?
         
         tempoInicialCura = Time.time;
@@ -75,17 +105,38 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // if(!gameOver)
+        //{
+
+           // segundos += Time.deltaTime;
+
+            //if(segundos>=60)
+            //{
+              //  segundos = 0;
+               // minutos++;
+                //minutostext.text = minutos.ToString();
+            //}
+            //segundosToInt = (int)segundos;
+            //segundostext.text = segundosToInt.ToString();
+
+      //  }
+        if(gameOver && Input.GetMouseButtonDown(0))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);    //o SceneManager.GetActiveScene é para pegar a cena atual?
 
 
+        }  
         andar();
 
 
         if (Time.time >= tempoInicialCura + tempoFinalCura)
         {
             tempoInicialCura = Time.time;
-            Hp+=taxaDeCura;
+            Hp+=(int)taxaDeCura;
             
         }
+
+        
 
 
 
@@ -93,7 +144,7 @@ public class Player : MonoBehaviour
     private void andar()
     {
 
-        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), 0);
+        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"),Input.GetAxisRaw("Vertical"));
 
 
         Vector3 direction = input.normalized;
@@ -130,5 +181,26 @@ public class Player : MonoBehaviour
 
         } 
     }
+
+
+    public void Morte()
+    {
+        Game.game.GameOver();
+        print("morreu");
+    }
+    private virtual void Invencibilidade(Player alvo)
+    {
+        Hp = hpMax;
+    }
+
+    private virtual void AtacarComShuriken(Inimigo alvo)
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Game.Spawnarshuriken();
+        } 
+    }
     
+
 }
+
