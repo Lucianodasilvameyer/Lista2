@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 public class Game : MonoBehaviour
 {
     [SerializeField]
+    private GameObject espadaPrefab;
+    [SerializeField]
     private GameObject shurikenPrefab;
     [SerializeField]
     private GameObject powerUpPrefab;
@@ -18,6 +20,9 @@ public class Game : MonoBehaviour
 
     [SerializeField]
     private float tempoDeDestruicaoMax;
+
+    [SerializeField]
+    espada espadaX;
 
     [SerializeField]
     shuriken shurikenX;
@@ -98,6 +103,7 @@ public class Game : MonoBehaviour
     List<Inimigo> listaInimigos = new List<Inimigo>();
     List<powerup> listaPowerups = new List<powerup>();
     List<shuriken> listaShurikens = new List<shuriken>();
+    List<espada> listaEspadas = new List<espada>();
 
     // Start is called before the first frame update
     void Start()
@@ -182,7 +188,14 @@ public class Game : MonoBehaviour
         GameObject fit = Instantiate(shurikenPrefab, position, Quaternion.identity);
         fit.GetComponent<shuriken>().direction(new Vector3(-5.88), (1.63));
         listaShurikens.Add(fit.GetComponent<shuriken>());
-
-
     }
+    public void Spawnarespada()
+    {
+        GameObject rit = Instantiate(espadaPrefab, position, Quaternion.identity);
+        rit.GetComponent<espada>().direction(new Vector3(-0.31), (1.66));
+        listaEspadas.Add(rit.GetComponent<espada>());
+    }
+
+
+
 }

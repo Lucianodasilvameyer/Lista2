@@ -186,7 +186,13 @@ public class Player2 : MonoBehaviour
         Game.game.GameOver();
         print("morreu");
     }
-
+    private virtual void AtacarComEspada(Inimigo alvo)
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Game.Spawnarespada();
+        }
+    }
 
 
 
