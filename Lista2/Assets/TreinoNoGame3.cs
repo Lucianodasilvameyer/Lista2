@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TreinoNoGame3 : MonoBehaviour
+/*public class TreinoNoGame3 : MonoBehaviour
 {
     public float TempoDeSpawnarInimigoInicial;
     public float TempoDeSpawnarInimigoFinal;
@@ -84,4 +84,4 @@ public class TreinoNoGame3 : MonoBehaviour
         ListaInimigos.Add(GetComponent<TreinoNoInimigo3>());
       
 
-}
+}*/

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TreinoNoInimigo3 : MonoBehaviour
+/*public class TreinoNoInimigo3 : MonoBehaviour
 {
 
     private TreinoNoPlayer3 treinoNoPlayer3_ref;
@@ -38,4 +38,4 @@ public class TreinoNoInimigo3 : MonoBehaviour
 
     }
 
-}
+}*/

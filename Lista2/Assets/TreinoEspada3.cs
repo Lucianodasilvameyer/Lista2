@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TreinoEspada3 : MonoBehaviour
+/*public class TreinoEspada3 : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -22,4 +22,4 @@ public class TreinoEspada3 : MonoBehaviour
             Destroy(collision.gameObject);
        }
     }
-}
+}*/

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class TreinoNoPlayer3 : MonoBehaviour
+/*public class TreinoNoPlayer3 : MonoBehaviour
 {
     private GameObject ShurikenPrefab;
     private GameObject EspadaPrefab;
@@ -176,4 +176,4 @@ public class TreinoNoPlayer3 : MonoBehaviour
         GameObject sis = Instantiate(EspadaPrefab, transform.position, Quaternion.identity);
     }
 
-}
+}*/
